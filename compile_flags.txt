@@ -1,0 +1,11 @@
+-L/nix/store/1llh99lhbb0nv7npg86c4g6dyh8bhm0r-glu-9.0.2/lib
+-L/nix/store/6ysdnx59r6idn6hqsma31fd9nch3bbhc-libGL-1.5.0/lib
+-L/nix/store/88z6jp04l9pnhcyvvppai4ll9svvs0nj-glew-2.2.0/lib
+-L/nix/store/x108ml8b4ynmh84gvqcmvlv8j4sv2kj6-freeglut-3.2.2/lib
+-lGL
+-lGLU
+-lGLEW
+-lglut
+-Wall
+-Wextra
+-pedantic
