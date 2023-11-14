@@ -15,7 +15,8 @@
       "x86_64-linux"
       "i686-linux"
       "aarch64-linux"
-      "x86_64-darwin"
+      # "x86_64-darwin"
+      "aarch64-darwin"
     ] (system: 
       let
         pkgs = import nixpkgs { inherit config overlays system; };
@@ -26,18 +27,19 @@
 
         devShell = pkgs.mkShell {
           buildInputs = with pkgs; [
-            gcc
+            # gcc
             # Headers not found
             clang-tools
             # LSP std
             llvmPackages_latest.libstdcxxClang
             # stdlib for cpp
             llvmPackages_latest.libcxx
-            libGL
-            libGLU
-            glew
-            freeglut
-            glxinfo
+            vulkan-headers
+            vulkan-loader
+            glm
+            glslang
+            glfw
+            clang
           ];
         };
         defaultPackage = pkgs.callPackage ./default.nix {};

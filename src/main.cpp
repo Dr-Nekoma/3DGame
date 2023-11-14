@@ -1,50 +1,42 @@
-#include <GL/gl.h>
-#include <GL/freeglut.h>
-#include <GL/glu.h>
+#pragma once
 
-double rot = 0;
-float matCol[] = {1,0,0,0};
+#include <cstdlib>
+#define GLFW_INCLUDE_VULKAN
 
-void display(){
-	glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
-	glPushMatrix();
-	glRotatef(30,1,0,0);
-	glRotatef(rot,0,1,0);
-	glMaterialfv(GL_FRONT,GL_DIFFUSE,matCol);
-	glutWireTeapot(0.5);
-	glPopMatrix();
-	glFlush();
-}
+// #include <GL/gl.h>
+// #include <GLFW/glfw3.h>
 
-void onIdle(){
-	rot += 0.01;
-	glutPostRedisplay();
-}
+// #define GLM_FORCE_RADIANS
+// #define GLM_FORCE_DEPTH_ZERO_TO_ONE
+// #include <glm/vec4.hpp>
+// #include <glm/mat4x4.hpp>
 
-void init(){
-	float pos[] = {1,1,1,0};
-	float white[] = {1,1,1,0};
-	float shini[] = {70};
-	
-	glClearColor(.5,.5,.5,0);
-	glShadeModel(GL_SMOOTH);
-	glLightfv(GL_LIGHT0,GL_AMBIENT,white);
-	glLightfv(GL_LIGHT0,GL_DIFFUSE,white);
-	glMaterialfv(GL_FRONT,GL_SHININESS,shini);
-	glEnable(GL_LIGHTING);
-	glEnable(GL_LIGHT0);
-	glEnable(GL_DEPTH_TEST);
-}
 
-int main(int argC, char* argV[])
-{
-	glutInit(&argC,argV);
-	glutInitDisplayMode(GLUT_SINGLE|GLUT_RGB|GLUT_DEPTH);
-	glutInitWindowSize(900,700);
-	glutCreateWindow("The Amazing, Rotating Utah Teapot brought to you in OpenGL via freeglut.");
-	init();
-	glutDisplayFunc(display);
-	glutIdleFunc(onIdle);
-	glutMainLoop();
-	return 0;
+#include <iostream>
+
+#include "lve_window.hpp"
+#include "lve_pipeline.hpp"
+
+class Runner {
+    public:
+    static constexpr int WIDTH = 800;
+    static constexpr int HEIGHT = 600;
+    void run (){};
+
+    private:
+    lve::LveWindow lveWindow{WIDTH, HEIGHT, "SomeName"};
+    lve::LvePipeline lvePipeline{"shaders/simple_shader.vert.spv", "shaders/simple_shader.vert.spv"};
+};
+
+int main() {
+    Runner app{};
+
+    try{
+        app.run();
+    } catch (const std::exception &ex){
+        std::cerr << ex.what() << std::endl;
+        return EXIT_FAILURE;
+    }
+
+    return EXIT_SUCCESS;
 }

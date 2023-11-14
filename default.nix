@@ -1,16 +1,31 @@
-{ lib, stdenv, clang-tools, llvmPackages_latest, libGL, libGLU, glew, freeglut }:
+{ lib, stdenv, clang-tools, llvmPackages_latest,
+  vulkan-headers, 
+  vulkan-loader,
+  glm,
+  glslang,
+  glfw,
+  clang }:
 
 stdenv.mkDerivation rec {
   name = "3d_game";
 
   src = ./src;
 
-  buildInputs = [ clang-tools llvmPackages_latest.libstdcxxClang llvmPackages_latest.libcxx libGL libGLU glew freeglut ];
+  buildInputs =
+    [ clang-tools
+      llvmPackages_latest.libstdcxxClang
+      llvmPackages_latest.libcxx
+      vulkan-headers
+      vulkan-loader
+      glm
+      glslang
+      glfw
+      clang ];
 
   dontConfigure = true;
 
   buildPhase = ''
-    $CC -L${libGL}/lib -L${libGLU}/lib -L/nix/store/88z6jp04l9pnhcyvvppai4ll9svvs0nj-glew-2.2.0/lib -L${freeglut}/lib main.cpp -lGL -lGLU -lglut -lGLEW -o game
+    ${clang}/bin/clang++ $src/main.cpp $src/lve_window.cpp $src/lve_pipeline.cpp -lglfw -lvulkan -ldl -lpthread -o game
   '';
 
   installPhase = ''
