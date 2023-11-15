@@ -1,5 +1,6 @@
 #pragma once
 
+#include "device.hpp"
 #include <cstdlib>
 #define GLFW_INCLUDE_VULKAN
 
@@ -11,32 +12,35 @@
 // #include <glm/vec4.hpp>
 // #include <glm/mat4x4.hpp>
 
-
 #include <iostream>
 
-#include "lve_window.hpp"
-#include "lve_pipeline.hpp"
+#include "protocol_pipeline.hpp"
+#include "protocol_window.hpp"
 
 class Runner {
-    public:
-    static constexpr int WIDTH = 800;
-    static constexpr int HEIGHT = 600;
-    void run (){};
+public:
+  static constexpr int WIDTH = 800;
+  static constexpr int HEIGHT = 600;
+  void run(){};
 
-    private:
-    lve::LveWindow lveWindow{WIDTH, HEIGHT, "SomeName"};
-    lve::LvePipeline lvePipeline{"shaders/simple_shader.vert.spv", "shaders/simple_shader.vert.spv"};
+private:
+  protocol::ProtocolWindow protocolWindow{WIDTH, HEIGHT, "SomeName"};
+  protocol::ProtocolDevice device{protocolWindow};
+  protocol::ProtocolPipeline protocolPipeline{
+      "shaders/simple_shader.vert.spv", "shaders/simple_shader.vert.spv",
+      device,
+      protocol::ProtocolPipeline::defaultPipelineConfiguration(WIDTH, HEIGHT)};
 };
 
 int main() {
-    Runner app{};
+  Runner app{};
 
-    try{
-        app.run();
-    } catch (const std::exception &ex){
-        std::cerr << ex.what() << std::endl;
-        return EXIT_FAILURE;
-    }
+  try {
+    app.run();
+  } catch (const std::exception &ex) {
+    std::cerr << ex.what() << std::endl;
+    return EXIT_FAILURE;
+  }
 
-    return EXIT_SUCCESS;
+  return EXIT_SUCCESS;
 }
